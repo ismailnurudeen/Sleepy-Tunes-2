@@ -2,4 +2,9 @@
 <resources>
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
 	</style>
+	<style name="text_style">
+		<item name="android:textSize">20sp</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:textColor">#393939</item>
+	</style>
 </resources>

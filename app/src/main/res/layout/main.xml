@@ -1,11 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent"
+	android:orientation="vertical"
+	android:background="@drawable/background_image">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+	<GridView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:numColumns="2"
+		android:padding="16dp"
+		android:paddingRight="0dp"
+		android:stretchMode="columnWidth"
+		android:verticalSpacing="10dp"
+		android:id="@+id/mainGridView"
+		android:gravity="center_horizontal"/>
+
+	<ListView
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:id="@+id/mainListView"
+		android:layout_marginTop="8dp"
+		android:layout_marginBottom="8dp"/>
 
 </LinearLayout>
+

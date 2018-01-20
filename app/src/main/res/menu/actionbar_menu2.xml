@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+		android:showAsAction="ifRoom|withText"
+        android:id="@+id/switchView2"
+        android:title="Change View(GridView)"
+		android:icon="@drawable/gridview_bar"/>
+    
+</menu>

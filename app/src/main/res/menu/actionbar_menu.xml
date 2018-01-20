@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+		android:showAsAction="ifRoom|withText"
+        android:id="@+id/switchView"
+        android:title="Change View"
+		android:icon="@drawable/ic_switch_view_black"/>
+
+</menu>
