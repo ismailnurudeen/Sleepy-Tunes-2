@@ -4,7 +4,8 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
-	android:minHeight="100dp">
+	android:minHeight="100dp"
+	android:descendantFocusability="blocksDescendants">
 
 	<ImageButton
 		android:id="@+id/list_baby_image"

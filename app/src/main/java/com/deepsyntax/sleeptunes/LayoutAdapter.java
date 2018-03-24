@@ -25,7 +25,7 @@ public class LayoutAdapter extends ArrayAdapter<Music>
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_style, parent, false);
 				Music currentItem=getItem(position);
 
-				ImageButton imageBtn=(ImageButton) convertView.findViewById(R.id.grid_baby_image);
+				ImageView imageBtn=(ImageView) convertView.findViewById(R.id.grid_baby_image);
 				TextView songLabel=(TextView)convertView.findViewById(R.id.grid_label);
 
 				imageBtn.setImageResource(currentItem.getSongPicture());

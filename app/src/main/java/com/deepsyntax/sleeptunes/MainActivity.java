@@ -33,6 +33,15 @@ public class MainActivity extends Activity
 
 
 	};
+
+	private int currentPosition;
+
+	private int pauseId;
+
+	private int playId;
+	private ImageView prevGridPlayStateImg;
+	private ImageView prevListPlayStateImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,88 +56,103 @@ public class MainActivity extends Activity
 		{
 			songList.add(new Music(musicId[i], musicsName[i], musicPic[i]));
 		}
-		
+
+		grid = (GridView) findViewById(R.id.mainGridView);
+		list = (ListView) findViewById(R.id.mainListView);	
+
 		//initial View on App lunch 
 		initializeView();
 	}
 
+
 	private void initializeView()
 	{
 		if (isGrid)
-		{
-			populateGrid();
+		{ 
+			/**
+			 * Using the @LayoutAdapter to add contents to the
+			 * GridView and setting Click Listeners for
+			 * each GridView Item
+			 */
+
+			LayoutAdapter adapter = new LayoutAdapter(this, songList, isGrid);
+			grid.setVisibility(View.VISIBLE);
+			list.setVisibility(View.GONE);
+			grid.setAdapter(adapter);
+
+			/*ItemListener iListener=new ItemListener(MainActivity.this, songList, mp, mCompletionListener);*/
+			grid.setOnItemClickListener(new OnItemClickListener(){
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+					{
+						//Toast.makeText(MainActivity.this, "You clicked on grid Item " + position, Toast.LENGTH_LONG).show();
+						int songId=songList.get(position).getSongId();
+						if (prevGridPlayStateImg != null)
+						{
+							prevGridPlayStateImg.setImageResource(android.R.drawable.ic_media_play);
+						}
+						ImageView gridPlayStateImg = (ImageView)v.findViewById(R.id.grid_play_ic);				
+						prevGridPlayStateImg = gridPlayStateImg;
+
+						if (playId == songId)
+						{
+							pauseSong(songId);
+							playId=0;
+							gridPlayStateImg.setImageResource(android.R.drawable.ic_media_play);
+						}
+						else
+						{
+							boolean isPaused = pauseId == songId ;
+							playSong(songId, isPaused);
+							gridPlayStateImg.setImageResource(android.R.drawable.ic_media_pause);
+						}
+						mp.setOnCompletionListener(mCompletionListener);
+					}
+				});
 		}
 		else
 		{
-			populateList();
+
+			/**
+			 * Using the @LayoutAdapter to add contents to the
+			 * ListView and setting Click Listeners for
+			 * each Listview Item
+			 */
+			LayoutAdapter adapter = new LayoutAdapter(this, songList, isGrid);
+			grid.setVisibility(View.GONE);
+			list.setVisibility(View.VISIBLE);
+			list.setAdapter(adapter);
+
+			/*ItemListener iListener=new ItemListener(MainActivity.this, songList, mp, mCompletionListener);*/
+			list.setOnItemClickListener(new OnItemClickListener(){
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+					{
+						//Toast.makeText(MainActivity.this, "You clicked on List Item " + position, Toast.LENGTH_LONG).show();
+						int songId=songList.get(position).getSongId();
+						if (prevListPlayStateImg != null)
+						{
+							prevListPlayStateImg.setImageResource(android.R.drawable.ic_media_play);
+						}
+						ImageView listPlayStateImg = (ImageView)v.findViewById(R.id.list_play_ic);				
+						prevListPlayStateImg = listPlayStateImg;
+
+						if (playId == songId)
+						{
+							pauseSong(songId);
+							listPlayStateImg.setImageResource(android.R.drawable.ic_media_play);
+						}
+						else
+						{
+							boolean isPaused = pauseId == songId ;
+							playSong(songId, isPaused);
+							listPlayStateImg.setImageResource(android.R.drawable.ic_media_pause);
+						}
+
+						mp.setOnCompletionListener(mCompletionListener);
+					}
+				});
 		}
-	}
-
-	/**
-	 * Using the @LayoutAdapter to add contents to the
-	 * GridView and setting Click Listeners for
-	 * each GridView Item
-	 */
-	private void populateGrid()
-	{
-		LayoutAdapter adapter = new LayoutAdapter<>(this, songList, isGrid);
-		grid = (GridView) findViewById(R.id.mainGridView);
-		//grid.setVisibility(View.VISIBLE);
-		//list.setVisibility(View.GONE);
-		grid.setAdapter(adapter);
-
-		/*ItemListener iListener=new ItemListener(MainActivity.this, songList, mp, mCompletionListener);*/
-		grid.setOnItemClickListener(new OnItemClickListener(){
-				@Override
-				public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-				{
-					Toast.makeText(MainActivity.this, "You clicked on grid Item " + position, Toast.LENGTH_LONG).show();
-					int songId=songList.get(position).getSongId();
-
-					freeMediaResources();
-					mp = MediaPlayer.create(MainActivity.this, songId);
-					mp.start();
-
-					ImageView playStateImg=(ImageView)v.findViewById(R.id.grid_play_ic);
-					playStateImg.setImageResource(android.R.drawable.ic_media_pause);
-
-					mp.setOnCompletionListener(mCompletionListener);
-				}
-			});
-	}
-	
-
-	/**
-	 * Using the @LayoutAdapter to add contents to the
-	 * ListView and setting Click Listeners for
-	 * each Listview Item
-	 */
-	private void populateList()
-	{
-	    LayoutAdapter adapter = new LayoutAdapter<>(this, songList, isGrid);
-		list = (ListView) findViewById(R.id.mainListView);	
-		//grid.setVisibility(View.GONE);
-		//list.setVisibility(View.VISIBLE);
-		list.setAdapter(adapter);
-
-		/*ItemListener iListener=new ItemListener(MainActivity.this, songList, mp, mCompletionListener);*/
-		list.setOnItemClickListener(new OnItemClickListener(){
-				@Override
-				public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-				{
-					Toast.makeText(MainActivity.this, "You clicked on List Item " + position, Toast.LENGTH_LONG).show();
-					int songId=songList.get(position).getSongId();
-
-					freeMediaResources();
-					mp = MediaPlayer.create(MainActivity.this, songId);
-					mp.start();
-
-					//ImageView playStateImg=(ImageView)v.findViewById(R.id.grid_play_ic);
-					//playStateImg.setImageResource(android.R.drawable.ic_media_pause);
-
-					mp.setOnCompletionListener(mCompletionListener);
-				}
-			});
 	}
 
 	private void freeMediaResources()
@@ -140,7 +164,30 @@ public class MainActivity extends Activity
 		}
 	}
 
+	private void playSong(int id, boolean paused)
+	{
+		playId = id;
+		if (paused)
+		{
+			mp.seekTo(currentPosition);
+		}
+		else
+		{
+			freeMediaResources();
+			mp = MediaPlayer.create(MainActivity.this, id);
+		}
+		mp.start();
+	}
+	private void pauseSong(int id)
+	{
 
+		if (mp != null && mp.isPlaying())
+		{
+			pauseId = id;
+			currentPosition = mp.getCurrentPosition();
+			mp.stop();
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
